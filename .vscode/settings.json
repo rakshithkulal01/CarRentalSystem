@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "D:/mysql-connector-j-9.4.0/mysql-connector-j-9.4.0",
+        "d:\\mysql-connector-j-9.4.0\\mysql-connector-j-9.4.0.jar",
+        "c:\\Users\\raksh\\Downloads\\sqlite-jdbc-3.50.3.0.jar"
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
+}
