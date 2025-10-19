@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Car Rental System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <nav class="bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-400">Car Rental System</h1>
+                </div>
+                <div class="flex items-center">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="p-8">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4">
+                Welcome, <span class="text-indigo-400" th:text="${user.name}">User Name</span>!
+            </h2>
+            <p class="text-gray-400">
+                You are successfully logged in. This is your dashboard.
+            </p>
+            
+            </div>
+    </main>
+
+</body>
+</html>

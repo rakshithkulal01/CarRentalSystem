@@ -14,8 +14,9 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    private String name;
+    private String make;
     private String model;
+    private int year;
     private double pricePerDay;
     private boolean available;
 
@@ -24,9 +25,10 @@ public class Car {
     
     public Car() {}
     
-    public Car(String name, String model, double pricePerDay, boolean available) {
-        this.name = name;
+    public Car(String make, String model, int year, double pricePerDay, boolean available) {
+        this.make = make;
         this.model = model;
+        this.year = year;
         this.pricePerDay = pricePerDay;
         this.available = available;
     }
@@ -41,11 +43,11 @@ public class Car {
     }
 
     public String getName() {
-        return name;
+        return make;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.make = name;
     }
 
     public String getModel() {

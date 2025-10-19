@@ -1,42 +1,51 @@
 package com.carrental.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity // <-- Tells JPA that this class is a table in the database
-@Table(name = "users") // <-- Explicitly maps this class to the "users" table
+@Entity
+@Table(name = "users")
 public class User {
 
-    @Id // <-- Marks this field as the primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // <-- Configures the ID to be auto-generated
-    private int id;
-    
-    private String name;
-    private String email;
-    private String password;
-    private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // Changed to Long for better compatibility
 
-    // --- Constructors, Getters, and Setters remain the same ---
-    // (No changes needed below this line)
+    @Column(nullable = false)
+    private String name;
+
+    // FIX 1: Added constraints to ensure email is never null and always unique
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    // FIX 2: Added constraint to ensure password is never null
+    @Column(nullable = false)
+    private String password;
+
+    // FIX 3: Set a default role for every new user
+    private String role = "CUSTOMER";
+
+    // --- Constructors, Getters, and Setters ---
+    // (No changes needed in the methods themselves, but updated id type)
 
     public User() {}
 
-    public User(String name, String email, String password, String role) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
     
     // Getters and Setters...
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

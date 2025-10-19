@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars - Car Rental System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <nav class="bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-400">Car Rental</h1>
+                <p class="text-sm text-gray-400" th:text="'Welcome, ' + ${user.name} + '!'"></p>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="p-8 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold mb-6 text-indigo-400">Available Cars for Rent</h2>
+
+        <div th:if="${not #lists.isEmpty(cars)}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div th:each="car : ${cars}" class="bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col">
+                <div class="p-6 flex-grow">
+                    <h3 class="text-xl font-bold text-white" th:text="${car.make + ' ' + car.model}">Car Make Model</h3>
+                    <p class="text-gray-400" th:text="${car.year}">Year</p>
+                    <p class="mt-4 text-2xl font-bold text-indigo-400">
+                        <span th:text="${'$' + #numbers.formatDecimal(car.pricePerDay, 1, 'COMMA', 2, 'POINT')}">$55.00</span>
+                        <span class="text-base font-normal text-gray-400">/ day</span>
+                    </p>
+                </div>
+                <div class="bg-gray-700 p-4">
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
+                        Rent Now
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:if="${#lists.isEmpty(cars)}" class="text-center py-10 bg-gray-800 rounded-lg">
+            <h3 class="text-xl text-gray-400">Sorry, there are no cars available at the moment.</h3>
+            <p class="text-gray-500">Please check back later.</p>
+        </div>
+    </main>
+
+</body>
+</html>
