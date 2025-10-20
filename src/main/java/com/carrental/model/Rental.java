@@ -1,89 +1,41 @@
 package com.carrental.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
-/**
- * Represents a single rental record.
- */
+@Entity
+@Table(name = "rentals")
 public class Rental {
-    private int id;
-    private int userId;
-    private int carId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id", nullable = false)
+    private Car car;
+
+    @Column(nullable = false)
     private LocalDate rentalDate;
-    private LocalDate returnDate;
-    private double totalCost;
 
-    // Default constructor
-    public Rental() {}
+    // We can add a returnDate later
+    // private LocalDate returnDate;
 
-    // Parameterized constructor
-    public Rental(int id, int userId, int carId, LocalDate rentalDate, LocalDate returnDate, double totalCost) {
-        this.id = id;
-        this.userId = userId;
-        this.carId = carId;
-        this.rentalDate = rentalDate;
-        this.returnDate = returnDate;
-        this.totalCost = totalCost;
+    public Rental() {
+        this.rentalDate = LocalDate.now(); // Default to today's date
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getCarId() {
-        return carId;
-    }
-
-    public void setCarId(int carId) {
-        this.carId = carId;
-    }
-
-    public LocalDate getRentalDate() {
-        return rentalDate;
-    }
-
-    public void setRentalDate(LocalDate rentalDate) {
-        this.rentalDate = rentalDate;
-    }
-
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    @Override
-    public String toString() {
-        return "Rental{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", carId=" + carId +
-                ", rentalDate=" + rentalDate +
-                ", returnDate=" + returnDate +
-                ", totalCost=" + totalCost +
-                '}';
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+    public Car getCar() { return car; }
+    public void setCar(Car car) { this.car = car; }
+    public LocalDate getRentalDate() { return rentalDate; }
+    public void setRentalDate(LocalDate rentalDate) { this.rentalDate = rentalDate; }
 }

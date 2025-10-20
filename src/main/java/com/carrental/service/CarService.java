@@ -22,10 +22,20 @@ public class CarService {
     }
 
     /**
-     * Saves a new car to the database.
+     * Saves a new or existing car to the database.
      * @param car The Car object to be saved.
      */
     public void saveCar(Car car) {
         carRepository.save(car);
+    }
+
+    /**
+     * Finds a single car by its ID.
+     * @param carId The ID of the car.
+     * @return The Car object, or null if not found.
+     */
+    public Car findCarById(Integer carId) {
+        // .findById() returns an Optional, so we use .orElse(null) to get the car or null
+        return carRepository.findById(carId).orElse(null);
     }
 }

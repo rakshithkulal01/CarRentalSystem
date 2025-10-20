@@ -12,42 +12,40 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
+    private Long id; // Best practice: Use Long for IDs
+
     private String make;
     private String model;
     private int year;
     private double pricePerDay;
-    private boolean available;
+    private boolean available = true; // Cars are available by default
 
-    // --- Constructors, Getters, and Setters remain the same ---
-    // (No changes needed below this line)
-    
+    // --- Constructors ---
     public Car() {}
-    
-    public Car(String make, String model, int year, double pricePerDay, boolean available) {
+
+    public Car(String make, String model, int year, double pricePerDay) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.pricePerDay = pricePerDay;
-        this.available = available;
     }
 
-    // Getters and Setters...
-    public int getId() {
+    // --- Corrected Getters and Setters ---
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
+    // FIX 1: Renamed from getName/setName to getMake/setMake
+    public String getMake() {
         return make;
     }
 
-    public void setName(String name) {
-        this.make = name;
+    public void setMake(String make) {
+        this.make = make;
     }
 
     public String getModel() {
@@ -56,6 +54,15 @@ public class Car {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    // FIX 2: Renamed from getyear/setyear to getYear/setYear (camelCase)
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public double getPricePerDay() {

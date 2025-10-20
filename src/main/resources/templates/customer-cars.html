@@ -8,19 +8,22 @@
 </head>
 <body class="bg-gray-900 text-white">
 
-    <nav class="bg-gray-800 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-indigo-400">Car Rental</h1>
-                <p class="text-sm text-gray-400" th:text="'Welcome, ' + ${user.name} + '!'"></p>
-            </div>
-            <form th:action="@{/logout}" method="post">
+  <nav class="bg-gray-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-indigo-400">Car Rental</h1>
+            <p class="text-sm text-gray-400" th:text="'Welcome, ' + ${user.name} + '!'"></p>
+        </div>
+        <div>
+            <a th:href="@{/customer/my-rentals}" class="text-indigo-400 hover:text-indigo-300 mr-4">My Rentals</a>
+            <form th:action="@{/logout}" method="post" class="inline">
                 <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
                     Logout
                 </button>
             </form>
         </div>
-    </nav>
+        </div>
+</nav>
 
     <main class="p-8 max-w-7xl mx-auto">
         <h2 class="text-3xl font-bold mb-6 text-indigo-400">Available Cars for Rent</h2>
@@ -37,10 +40,10 @@
                     </p>
                 </div>
                 <div class="bg-gray-700 p-4">
-                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
-                        Rent Now
-                    </button>
-                </div>
+    <a th:href="@{/customer/rent/{id}(id=${car.id})}" class="block text-center w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
+        Rent Now
+    </a>
+</div>
             </div>
 
         </div>
