@@ -9,15 +9,16 @@
 
     <nav class="bg-gray-800 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
-            <h1 class="text-2xl font-bold text-indigo-400">Admin Panel</h1>
+            <h1 class="text-2xl font-bold text-indigo-400">Admin Panel - Rentals</h1>
             <div>
-                <a th:href="@{/admin/cars}" class="text-indigo-400 hover:text-indigo-300 mr-4">Manage Cars</a>
-                <form th:action="@{/logout}" method="post" class="inline">
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
-                        Logout
-                    </button>
-                </form>
-            </div>
+                 <a th:href="@{/admin/dashboard}" class="text-indigo-400 hover:text-indigo-300 mr-4">Dashboard</a>
+                 <a th:href="@{/admin/cars}" class="text-indigo-400 hover:text-indigo-300 mr-4">Manage Cars</a>
+                 <form th:action="@{/logout}" method="post" class="inline">
+                     <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md">
+                         Logout
+                     </button>
+                 </form>
+             </div>
         </div>
     </nav>
 
@@ -31,7 +32,10 @@
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase">Customer Name</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase">Customer Email</th>
                             <th class="px-6 py-3 text-left text-xs font-medium uppercase">Car</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase">Rental Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase">Start Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase">End Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase">Action</th>
                         </tr>
                     </thead>
                     <tbody class="bg-gray-800">
@@ -39,10 +43,22 @@
                             <td class="px-6 py-4" th:text="${rental.user.name}">John Doe</td>
                             <td class="px-6 py-4" th:text="${rental.user.email}">john.doe@example.com</td>
                             <td class="px-6 py-4" th:text="${rental.car.make + ' ' + rental.car.model}">Toyota Camry</td>
-                            <td class="px-6 py-4" th:text="${rental.rentalDate}">2025-10-20</td>
+                            <td class="px-6 py-4" th:text="${rental.startDate}">2025-10-20</td>
+                            <td class="px-6 py-4" th:text="${rental.endDate}">2025-10-25</td>
+                            <td class="px-6 py-4">
+                                 <span th:if="${rental.car.available}" class="text-green-400 font-semibold">Available</span>
+                                 <span th:unless="${rental.car.available}" class="text-yellow-400 font-semibold">Rented Out</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                 <form th:if="${!rental.car.available}" th:action="@{/admin/rentals/return/{rentalId}(rentalId=${rental.id})}" method="post">
+                                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1 px-3 rounded">
+                                         Mark as Returned
+                                     </button>
+                                 </form>
+                            </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(rentals)}">
-                            <td colspan="4" class="text-center py-4 text-gray-400">No rentals have been made yet.</td>
+                            <td colspan="7" class="text-center py-4 text-gray-400">No rentals have been made yet.</td>
                         </tr>
                     </tbody>
                 </table>

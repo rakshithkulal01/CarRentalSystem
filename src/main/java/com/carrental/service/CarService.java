@@ -22,6 +22,14 @@ public class CarService {
     }
 
     /**
+     * Retrieves all cars that are currently available for rent.
+     * @return a list of available Car objects.
+     */
+    public List<Car> findAvailableCars() {
+        return carRepository.findByAvailable(true); // Call the repository method with true
+    }
+
+    /**
      * Saves a new or existing car to the database.
      * @param car The Car object to be saved.
      */
@@ -31,11 +39,34 @@ public class CarService {
 
     /**
      * Finds a single car by its ID.
-     * @param carId The ID of the car.
+     * @param id The ID of the car.
      * @return The Car object, or null if not found.
      */
-    public Car findCarById(Integer carId) {
-        // .findById() returns an Optional, so we use .orElse(null) to get the car or null
-        return carRepository.findById(carId).orElse(null);
+    public Car findCarById(Long id) {
+        return carRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Deletes a car from the database by its ID.
+     * @param id The ID of the car to delete.
+     */
+    public void deleteCarById(Long id) {
+        carRepository.deleteById(id);
+    }
+
+    /**
+     * Counts the total number of cars in the inventory.
+     * @return The total car count.
+     */
+    public long countTotalCars() {
+        return carRepository.count();
+    }
+
+    /**
+     * Counts the number of cars currently rented out (not available).
+     * @return The count of unavailable cars.
+     */
+    public long countRentedCars() {
+        return carRepository.countByAvailable(false);
     }
 }

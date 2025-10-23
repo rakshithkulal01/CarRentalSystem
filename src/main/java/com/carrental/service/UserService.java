@@ -5,19 +5,19 @@ import com.carrental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional; // Import Optional
+
 @Service
 public class UserService {
 
-    // Spring will automatically inject an instance of UserRepository here
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Saves a new user to the database. This is used for registration.
-     * @param user The User object to be saved.
+     * Saves a new user or updates an existing one.
+     * @param user The User object to be saved/updated.
      */
     public void saveUser(User user) {
-        // Here you could add logic for password hashing before saving
         userRepository.save(user);
     }
 
@@ -29,16 +29,23 @@ public class UserService {
      */
     public User loginUser(String email, String password) {
         // Find the user by their email address
-        java.util.Optional<User> optionalUser = userRepository.findByEmail(email);
+        // FIX: Handle the Optional returned by the repository
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User user = optionalUser.orElse(null); // Get User or null if not found
 
-        // Check if a user with that email was found AND if the password matches
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getPassword().equals(password)) {
-                return user; // Login successful
-            }
+        // Check if user exists and if the password matches
+        if (user != null && user.getPassword().equals(password)) {
+            return user; // Login successful
         }
         
-        return null; // Login failed (user not found or password incorrect)
+        return null; // Login failed
+    }
+
+    /**
+     * Counts the total number of registered users.
+     * @return The total user count.
+     */
+    public long countTotalUsers() {
+        return userRepository.count();
     }
 }

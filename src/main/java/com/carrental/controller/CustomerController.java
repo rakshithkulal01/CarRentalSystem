@@ -12,13 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/customer") // All routes in this controller will start with /customer
+@RequestMapping("/customer")
 public class CustomerController {
 
-    // --- Injected Services (grouped together for clarity) ---
+    // --- Injected Services ---
     @Autowired
     private CarService carService;
 
@@ -45,8 +46,10 @@ public class CustomerController {
             return "redirect:/login";
         }
 
-        List<Car> carList = carService.findAllCars();
-        model.addAttribute("cars", carList);
+        // Use the method that only fetches available cars
+        List<Car> availableCarList = carService.findAvailableCars();
+
+        model.addAttribute("cars", availableCarList);
         model.addAttribute("user", loggedInUser);
         return "customer-cars";
     }
@@ -54,16 +57,16 @@ public class CustomerController {
     // --- Car Rental Process ---
 
     @GetMapping("/rent/{carId}")
-    public String showRentCarForm(@PathVariable Integer carId, Model model, HttpSession session) {
+    public String showRentCarForm(@PathVariable Long carId, Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
-        // FIX: Removed unnecessary .intValue() conversion
         Car car = carService.findCarById(carId);
 
         if (car == null || !car.isAvailable()) {
+            // Redirect if car not found or not available
             return "redirect:/customer/cars";
         }
 
@@ -73,26 +76,32 @@ public class CustomerController {
     }
 
     @PostMapping("/rent/{carId}")
-    public String processRental(@PathVariable Integer carId,
+    public String processRental(@PathVariable Long carId,
                                 @ModelAttribute("user") User userFormData,
+                                @RequestParam("startDate") LocalDate startDate,
+                                @RequestParam("endDate") LocalDate endDate,
                                 HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
+        // Update user details from the form
         loggedInUser.setPhone(userFormData.getPhone());
         loggedInUser.setAddress(userFormData.getAddress());
         userService.saveUser(loggedInUser);
 
-        // FIX: Removed unnecessary .intValue() conversion
+        // Find the car again to be safe
         Car car = carService.findCarById(carId);
 
         if (car == null || !car.isAvailable()) {
+            // Handle error if car somehow became unavailable
             return "redirect:/customer/cars";
         }
 
-        rentalService.createRental(loggedInUser, car);
+        // Create the rental record
+        rentalService.createRental(loggedInUser, car, startDate, endDate);
+
         return "redirect:/customer/booking-success";
     }
 
@@ -104,7 +113,7 @@ public class CustomerController {
         return "booking-success";
     }
 
-    // --- NEW: Method to show user's rental history ---
+    // --- Rental History ---
 
     @GetMapping("/my-rentals")
     public String showMyRentals(Model model, HttpSession session) {

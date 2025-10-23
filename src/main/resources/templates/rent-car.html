@@ -30,7 +30,9 @@
 
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-bold mb-4 text-indigo-400">Confirm Your Details</h2>
-               <form th:action="@{/customer/rent/{carId}(carId=${car.id})}" th:object="${user}" method="post" class="space-y-4">
+                
+                <form th:action="@{/customer/rent/{carId}(carId=${car.id})}" th:object="${user}" method="post" class="space-y-4">
+                    
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-300">Full Name</label>
                         <input type="text" id="name" th:field="*{name}" required class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md p-2">
@@ -43,6 +45,20 @@
                         <label for="address" class="block text-sm font-medium text-gray-300">Address</label>
                         <textarea id="address" th:field="*{address}" rows="3" required placeholder="Enter your full address" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md p-2"></textarea>
                     </div>
+
+                    <div>
+                        <label for="startDate" class="block text-sm font-medium text-gray-300">Start Date</label>
+                        <input type="date" id="startDate" name="startDate" required 
+                               class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md p-2 text-white" 
+                               style="color-scheme: dark;">
+                    </div>
+                    <div>
+                        <label for="endDate" class="block text-sm font-medium text-gray-300">End Date</label>
+                        <input type="date" id="endDate" name="endDate" required 
+                               class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md p-2 text-white"
+                               style="color-scheme: dark;">
+                    </div>
+
                     <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">
                         Complete Booking
                     </button>
